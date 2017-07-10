@@ -1,0 +1,16 @@
+$Region = "East US"
+ $VNET = Get-AzureRmVirtualNetwork -Name ******* -ResourceGroupName ******
+ 
+ $VNIC = Get-AzureRmNetworkInterface -Name ****** -ResourceGroupName ******
+
+ #### VM settings
+ $VM = New-AzureRmVMConfig -VMName ***** -VMSize "Standard_A2" -AvailabilitySetId /*****
+ $osDiskUri = "****************************************.vhd"
+ $VM = Set-AzureRmVMOSDisk -VM $VM -Name "**************.vhd" -VhdUri $osDiskUri -CreateOption attach -Windows
+
+ #### Network Interfaces
+
+ $VM = Add-AzureRmVMNetworkInterface -VM $VM -Id $VNIC.Id
+
+ #### Creating VM
+ New-AzureRMVM -ResourceGroupName "*****" -Location $Region -VM $VM -Verbose
