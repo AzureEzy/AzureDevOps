@@ -1,0 +1,19 @@
+----Azure Storage to Local VM.
+
+AzCopy /Source:https://********.blob.core.windows.net/******* /Dest:"G:\****\***\Backup" /SourceKey:************************************************************* /Pattern:"*****************************************"
+
+
+---- Local VM to Azure Storage
+
+AzCopy /Source:"G:\******\********\********\Backup" /Dest:https://**********.blob.core.windows.net/******** /DestKey:**********************************************************
+
+
+-----------One storage to another storage.
+
+AzCopy /Source:https://*******.blob.core.windows.net/vhds /Dest:https://******.blob.core.windows.net/***** /sourcekey:************************************************************ /destkey:*********************************************** /Pattern:"***********.vhd"
+
+
+
+
+
+
