@@ -1,2 +1,0 @@
-$Provider=Get-AzureRmResourceProvider|Out-GridView -PassThru
-$Provider.ResourceTypes
