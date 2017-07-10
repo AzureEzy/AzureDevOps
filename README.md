@@ -1,2 +1,0 @@
-# Script
-Azure Powershell scripts. 
