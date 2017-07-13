@@ -1,0 +1,37 @@
+$storageAccounts = Get-AzureRMStorageAccount
+$output = New-Object -TypeName psobject 
+$output | Add-Member -MemberType NoteProperty -Name "Storage Account Name" -Value NotSet 
+$output | Add-Member -MemberType NoteProperty -Name "Storage Type" -Value NotSet
+$output | Add-Member -MemberType NoteProperty -Name "Container Name" -Value NotSet
+$output | Add-Member -MemberType NoteProperty -Name "VHD Name" -Value NotSet
+$output | Add-Member -MemberType NoteProperty -Name "Attach to VM" -Value NotSet
+$output | Add-Member -MemberType NoteProperty -Name "Lease Status" -Value NotSet
+foreach ( $storageAccount in $storageAccounts)
+{
+$storageAccountse = Get-AzureRmStorageAccount -ResourceGroupName $storageAccount.ResourceGroupName -Name $storageAccount.StorageAccountName
+$containers = Get-AzureStorageContainer -Context $storageAccountse.Context
+foreach($container in $containers){
+    $blobDetails = Get-AzureStorageBlob -Context $storageAccountse.Context -Container $container.Name
+    foreach($blobDetail in $blobDetails){
+         if($blobDetail.BlobType -eq [Microsoft.WindowsAzure.Storage.Blob.BlobType]::PageBlob -and $blobDetail.Name -match ".vhd"){
+            $output.'Storage Account Name' = $storageAccount.StorageAccountName
+            $output.'Storage Type' = $storageAccount.sku.Name
+
+            $output.'Container Name' = $container.CloudBlobContainer.Name  -join "`r`n"
+            $output.'VHD Name' = $blobDetail.Name  -join "`r`n"
+            if($blobDetail.ICloudBlob.Properties.LeaseState -eq "Leased" )
+            {
+            $output.'Attach to VM' =  $blobDetail.ICloudBlob.Metadata.MicrosoftAzureCompute_VMName  -join "`r`n"
+            }
+            else
+            {
+            $output.'Attach to VM' = "No Attach to VM"
+            }
+            $output.'Lease Status' = $blobDetail.ICloudBlob.Properties.LeaseStatus
+            Export-Csv -InputObject $output -Path "C:\blobdetails.csv"  -encoding ASCII -Append -NoTypeInformation
+        }
+
+    }
+}
+}
+
