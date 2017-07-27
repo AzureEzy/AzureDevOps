@@ -1,0 +1,60 @@
+$vaults = Get-AzureRmRecoveryServicesVault
+foreach($vault in $vaults){
+    $outputs = Set-AzureRmSiteRecoveryVaultSettings -ARSVault $vault
+    $container = Get-AzureRmSiteRecoveryProtectionContainer
+    if($container -ne $null){
+        $replicatedItems = Get-AzureRmSiteRecoveryReplicationProtectedItem -ProtectionContainer $container
+        foreach($replicatedItem in $replicatedItems){
+            if($replicatedItem.ProtectionStateDescription -eq "Protected"){
+                #Get Recovery Point of one Replicated Item
+                $recoveryPoints = Get-AzureRmSiteRecoveryRecoveryPoint -ReplicationProtectedItem $replicatedItem
+                $appConsistentArray = @()
+                $crashConsistentArray = @()
+                for($i=$recoveryPoints.Count - 1;$i -ge 0; $i--){
+                        $output = New-Object -TypeName psobject
+                        $output | Add-Member -MemberType NoteProperty -Name "VaultName" -Value NotSet
+                        $output | Add-Member -MemberType NoteProperty -Name "ProtectedItem" -Value NotSet
+                        $output | Add-Member -MemberType NoteProperty -Name "Type" -Value NotSet
+                        $output | Add-Member -MemberType NoteProperty -Name "RecoveryPointConsistencyTime" -Value NotSet
+                        $output.'VaultName'=$vault.Name -join "`r`n"
+                        $output.'ProtectedItem'=$replicatedItem.FriendlyName
+                        $output.Type = $recoveryPoints[$i].RecoveryPointType
+                        $output.RecoveryPointConsistencyTime = $recoveryPoints[$i].RecoveryPointTime
+                        if($recoveryPoints[$i].RecoveryPointType -eq "ApplicationConsistent"){
+                            $appConsistentArray += $output
+                        }
+                        elseif($recoveryPoints[$i].RecoveryPointType -eq "CrashConsistent"){
+                            $crashConsistentArray += $output
+                        }
+                }
+                if($crashConsistentArray.Count -lt 6){
+                    foreach($crashConsistent in $crashConsistentArray){
+                       Export-Csv -InputObject $crashConsistent -Path "D:\RecoveryPoint.csv" -encoding ASCII -Append -NoTypeInformation
+                    }
+                }
+                else{
+                    for($i=$crashConsistentArray.Count -1;$i -ge $crashConsistentArray.Count - 5;$i--){
+                        Export-Csv -InputObject $crashConsistentArray[$i] -Path "D:\RecoveryPoint.csv" -encoding ASCII -Append -NoTypeInformation
+                    }
+                }
+                if($appConsistentArray.Count -lt 6){
+                    foreach($appConsistent in $appConsistentArray){
+                        Export-Csv -InputObject $appConsistent -Path "D:\RecoveryPoint.csv" -encoding ASCII -Append -NoTypeInformation
+                    }
+                }
+                else{
+                    for($i=$appConsistentArray.Count -1;$i -ge $appConsistentArray.Count - 5;$i--){
+                        Export-Csv -InputObject $appConsistentArray[$i] -Path "D:\RecoveryPoint.csv" -encoding ASCII -Append -NoTypeInformation
+                    }
+                }
+            }
+           else{
+                 $output.'VaultName'=$vault.Name -join "`r`n"
+                 $output.'ProtectedItem'=$replicatedItem.FriendlyName
+                 $output.'Type'= $replicatedItem.ProtectionStateDescription
+                 $output.'RecoveryPointConsistencyTime' = $replicatedItem.ProtectionStateDescription
+                 Export-Csv -InputObject $output -Path "D:\RecoveryPoint.csv" -encoding ASCII -Append -NoTypeInformation
+} 
+            }
+        }
+    }
