@@ -1,0 +1,60 @@
+# IF you ASM VM's are in Vnet then use bleow script to migrate into ARM.
+
+#Login to ARM model
+Login-AzureRmAccount
+
+#Get all azure subscription which are attached with your account
+Get-AzureRMSubscription | Sort Name | Select Name
+
+#Select a subscription where action need to perform
+Select-AzureRmSubscription –SubscriptionName "Visual Studio Dev Essentials"
+
+#Register resource manager Provider(It will take less than 5 mins)
+Register-AzureRmResourceProvider -ProviderNamespace Microsoft.ClassicInfrastructureMigrate
+
+#Get confirmed registration done or not.
+Get-AzureRmResourceProvider -ProviderNamespace Microsoft.ClassicInfrastructureMigrate
+
+#Check resources usage in resource manager.(Raise an request with MS if you need more)
+Get-AzureRmVMUsage -Location "East US"
+
+#Login to ASM Model
+Add-AzureAccount
+
+#Get all azure subscription which are attached with your account
+Get-AzureSubscription | Sort SubscriptionName | Select SubscriptionName
+
+
+#Select a subscription where action need to perform
+Select-AzureSubscription –SubscriptionName "Visual Studio Dev Essentials"
+
+#Get Vnet name where migration need to perform.
+Get-AzureVNetSite | ft Name
+
+#Select that VNet
+$vnetName = "Group ASM2ARMDemo-RG ASM2ARMVnet1"
+
+#Prepare your VNet migraion
+Move-AzureVirtualNetwork -Prepare -VirtualNetworkName $vnetName
+
+#Abort your VNet migration if you are not good to go
+Move-AzureVirtualNetwork -Abort -VirtualNetworkName $vnetName
+
+#Commit your VNet migration if all good.(Once you commited you can't revert it back to ASM)
+Move-AzureVirtualNetwork -Commit -VirtualNetworkName $vnetName
+
+
+#Select Storage account name which need to Migrate
+$storageAccountName = "asm2armdemostorage"
+
+#Prepare your storage migraion
+Move-AzureStorageAccount -Prepare -StorageAccountName $storageAccountName
+
+#Abort your Storage migration if you are not good to go
+Move-AzureStorageAccount -Abort -StorageAccountName $storageAccountName
+
+#Commit your Storage migration if all good.(Once you commited you can't revert it back to ASM)
+Move-AzureStorageAccount -Commit -StorageAccountName $storageAccountName
+
+#Clear your powershell profile if you are managing multiple subscriptions through single account to discard mixing things.
+Clear-AzureProfile
