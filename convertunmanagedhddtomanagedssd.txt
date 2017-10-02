@@ -27,6 +27,7 @@ $storageType = 'PremiumLRS'
 
 # Premium capable size
 # Required only if converting storage from standard to premium
+# Add type VM of Premium
 $size = 'Standard_DS3_v2'
 $vm = Get-AzureRmVM -Name $vmName -resourceGroupName $rgName
 
@@ -46,7 +47,7 @@ foreach ($disk in $vmDisks)
 {
     if ($disk.OwnerId -eq $vm.Id)
     {
-        $diskUpdateConfig = New-AzureRmDiskUpdateConfig –AccountType $storageType
+        $diskUpdateConfig = New-AzureRmDiskUpdateConfig â€“AccountType $storageType
         Update-AzureRmDisk -DiskUpdate $diskUpdateConfig -ResourceGroupName $rgName `
         -DiskName $disk.Name
     }
