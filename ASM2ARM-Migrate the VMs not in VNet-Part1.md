@@ -1,6 +1,8 @@
+# ASM2ARM - Migrate VMs not in VNet Part 1.
 
-#This script is for VM's which is only in Cloudservice and not the part of any VNet. In this migration approach it will automatically create VNet for you in ARM Model and then migrate ASM VM's in ARM.
+This script is for VM's which is only in Cloudservice and not the part of any VNet. This migration approach will automatically create VNet for you in ARM Model and then migrate ASM VM's into ARM. Follow the code snippet below:
 
+```powershell
 #Login to ARM model
 Login-AzureRmAccount
 
@@ -49,8 +51,9 @@ $validate.ValidationMessages
 Move-AzureService -Prepare -ServiceName $serviceName `
     -DeploymentName $deploymentName -CreateNewVirtualNetwork
 
-    #Abort your Cloudservice migration if you are not good to go
-    Move-AzureService -Abort -ServiceName $serviceName -DeploymentName $deploymentName
+#Abort your Cloudservice migration if you are not good to go
+Move-AzureService -Abort -ServiceName $serviceName -DeploymentName $deploymentName
 
-    #Commit your Cloudservice migration if all good.(Once you commited you can't revert it back to ASM)
-    Move-AzureService -Commit -ServiceName $serviceName -DeploymentName $deploymentName
+#Commit your Cloudservice migration if all good.(Once you commited you can't revert it back to ASM)
+Move-AzureService -Commit -ServiceName $serviceName -DeploymentName $deploymentName
+```
