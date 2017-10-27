@@ -1,10 +1,13 @@
-# IF you ASM VM's are in Vnet then use bleow script to migrate into ARM.
+# ASM2ARM - Migrate the VMS and storage account from classic VNet 
 
+If your ASM VM's are in Vnet then use below script snippet with comment messages inline to migrate them into ARM.
+
+```powershell
 #Login to ARM model
 Login-AzureRmAccount
 
 #Get all azure subscription which are attached with your account
-Get-AzureRMSubscription | Sort Name | Select Name
+Get-AzureRMSubscription | Sort-Object -Property Name | Select-Object -Property Name
 
 #Select a subscription where action need to perform
 Select-AzureRmSubscription –SubscriptionName "Visual Studio Dev Essentials"
@@ -22,7 +25,7 @@ Get-AzureRmVMUsage -Location "East US"
 Add-AzureAccount
 
 #Get all azure subscription which are attached with your account
-Get-AzureSubscription | Sort SubscriptionName | Select SubscriptionName
+Get-AzureSubscription | Sort-Object -Property SubscriptionName | Select-Object -Property SubscriptionName
 
 
 #Select a subscription where action need to perform
@@ -58,3 +61,4 @@ Move-AzureStorageAccount -Commit -StorageAccountName $storageAccountName
 
 #Clear your powershell profile if you are managing multiple subscriptions through single account to discard mixing things.
 Clear-AzureProfile
+```
