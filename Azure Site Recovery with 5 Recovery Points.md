@@ -1,3 +1,8 @@
+# Azure site recover with five recovery points
+
+Below is the code snippet.
+
+```powershell
 $vaults = Get-AzureRmRecoveryServicesVault
 foreach($vault in $vaults){
     $outputs = Set-AzureRmSiteRecoveryVaultSettings -ARSVault $vault
@@ -58,3 +63,4 @@ foreach($vault in $vaults){
             }
         }
     }
+```
