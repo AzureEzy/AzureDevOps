@@ -1,3 +1,6 @@
+# Get the VHD count per storage account
+
+```powershell
 $storageAccounts = Get-AzureRmStorageAccount
 $output = New-Object psobject
 $output | Add-Member -MemberType NoteProperty -Name "Storage Account" -Value "NOT SET"
@@ -20,4 +23,5 @@ foreach($storageAccount in $storageAccounts){
     $output.'Storage Type' = $storageAccount.Sku.Name
     $output.'Storage Account' = $storageAccount.StorageAccountName
     Export-Csv -InputObject $output -Path "D:\Stoageoverview.csv" -encoding ASCII -Append -NoTypeInformation
-} 
+}
+```
