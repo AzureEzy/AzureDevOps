@@ -1,3 +1,6 @@
+# Migrate to managed disks for VMs within an Availability set.
+
+```powershell
 $rgName = '****'
 $avSetName = '*****'
 
@@ -14,3 +17,4 @@ foreach($vmInfo in $avSet.VirtualMachinesReferences)
    ConvertTo-AzureRmVMManagedDisk -ResourceGroupName $rgName -VMName $vm.Name
 
     }
+```
