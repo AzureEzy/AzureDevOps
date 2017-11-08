@@ -1,5 +1,11 @@
+# Save VM Image
+
+```powershell
+
 Stop-AzureRmVM -ResourceGroupName ********** -Name ********
 
 Set-AzureRmVm -ResourceGroupName ******* -Name ************ -Generalized
 
 Save-AzureRmVMImage -ResourceGroupName "***********" -VMName "*********" -DestinationContainerName "vhds" -VHDNamePrefix "***********"
+
+```
