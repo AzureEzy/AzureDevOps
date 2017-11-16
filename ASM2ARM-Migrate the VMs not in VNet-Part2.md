@@ -1,11 +1,13 @@
+# ASM2ARM - Migrate VMs not in VNet Part 2
 
-#This script is for VM's which is only in Cloudservice and not the part of any VNet. In this migration approach you have to migrate ASM VM's to your desired VNet in ARM. That Vnet should be Precreated in ARM. 
+The below script snippet is applicable for VMs which are only in a Cloudservice and not part of any VNet. In this migration approach you have to migrate ASM VMs to your desired VNet in ARM. That Vnet should already exist in ARM.
 
+```powershell
 #Login to ARM model
 Login-AzureRmAccount
 
 #Get all azure subscription which are attached with your account
-Get-AzureRMSubscription | Sort Name | Select Name
+Get-AzureRMSubscription | Sort-Object -Property Name | Select-Object -Property Name
 
 #Select a subscription where action need to perform
 Select-AzureRmSubscription –SubscriptionName "Visual Studio Dev Essentials"
@@ -23,14 +25,14 @@ Get-AzureRmVMUsage -Location "Southeast Asia"
 Add-AzureAccount
 
 #Get all azure subscription which are attached with your account
-Get-AzureSubscription | Sort SubscriptionName | Select SubscriptionName
+Get-AzureSubscription | Sort-Object -Property SubscriptionName | Select-Object -Property SubscriptionName
 
 #Select a subscription where action need to perform
 Select-AzureSubscription –SubscriptionName "Visual Studio Dev Essentials"
 
 
 #Get Cloudservice name where migration need to perform.
-Get-AzureService | ft Servicename
+Get-AzureService | Format-Table -Property Servicename
 
 #Define variable with Cloudservice name
 $serviceName = "ASM2ARM-CSVM"
@@ -53,10 +55,11 @@ Move-AzureService -Prepare -ServiceName $serviceName -DeploymentName $deployment
     -VirtualNetworkName $vnetName -SubnetName $subnetName
 
 
-    #Abort your Cloudservice migration if you are not good to go
-    Move-AzureService -Abort -ServiceName $serviceName -DeploymentName $deploymentName
+#Abort your Cloudservice migration if you are not good to go
+Move-AzureService -Abort -ServiceName $serviceName -DeploymentName $deploymentName
 
-    #Commit your Cloudservice migration if all good.(Once you commited you can't revert it back to ASM)
-    Move-AzureService -Commit -ServiceName $serviceName -DeploymentName $deploymentName
+#Commit your Cloudservice migration if all good.(Once you commited you can't revert it back to ASM)
+Move-AzureService -Commit -ServiceName $serviceName -DeploymentName $deploymentName
 
+```
 

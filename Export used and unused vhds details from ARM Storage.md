@@ -1,5 +1,8 @@
+# Export used and unused VHD details from an AzureRM storage account
+
+```powershell
 $storageAccounts = Get-AzureRMStorageAccount
-$output = New-Object -TypeName psobject 
+$output = New-Object -TypeName psobject
 $output | Add-Member -MemberType NoteProperty -Name "Storage Account Name" -Value NotSet 
 $output | Add-Member -MemberType NoteProperty -Name "Storage Type" -Value NotSet
 $output | Add-Member -MemberType NoteProperty -Name "Container Name" -Value NotSet
@@ -35,3 +38,4 @@ foreach($container in $containers){
 }
 }
 
+```

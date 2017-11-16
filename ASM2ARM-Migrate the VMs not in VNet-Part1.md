@@ -1,4 +1,4 @@
-# ASM2ARM - Migrate VMs not in VNet Part 1.
+# ASM2ARM - Migrate VMs not in VNet Part 1
 
 This script is for VM's which is only in Cloudservice and not the part of any VNet. This migration approach will automatically create VNet for you in ARM Model and then migrate ASM VM's into ARM. Follow the code snippet below:
 
@@ -7,7 +7,7 @@ This script is for VM's which is only in Cloudservice and not the part of any VN
 Login-AzureRmAccount
 
 #Get all azure subscription which are attached with your account
-Get-AzureRMSubscription | Sort Name | Select Name
+Get-AzureRMSubscription | Sort-Object -Property Name | Select-Object -Property Name
 
 #Select a subscription where action need to perform
 Select-AzureRmSubscription –SubscriptionName "Visual Studio Dev Essentials"
@@ -26,13 +26,13 @@ Get-AzureRmVMUsage -Location "East US"
 Add-AzureAccount
 
 #Get all azure subscription which are attached with your account
-Get-AzureSubscription | Sort SubscriptionName | Select SubscriptionName
+Get-AzureSubscription | Sort-Object -Property SubscriptionName | Select-Object -Property SubscriptionName
 
 #Select a subscription where action need to perform
 Select-AzureSubscription –SubscriptionName "Visual Studio Dev Essentials"
 
 #Get Cloudservice name where migration need to perform.
-Get-AzureService | ft Servicename
+Get-AzureService | Format-Table -Property Servicename
 
 
 #Define variable with Cloudservice name

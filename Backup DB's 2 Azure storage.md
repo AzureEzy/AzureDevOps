@@ -1,3 +1,6 @@
+# Backup databases to Azure storage
+
+```sql
 use master
  go
  
@@ -9,12 +12,9 @@ SET @filename = 'https://*****.blob.core.windows.net/backup/AdventureWork_Log'+'
  BACKUP log [AdventureWork]
  TO URL = @filename
  WITH CREDENTIAL = 'SQLBlobAdmin', COMPRESSION;
+```
 
-
-
-
-
-
+```sql
 Use Master
 Go
 
@@ -50,3 +50,4 @@ END
  
 CLOSE db_cursor;
 DEALLOCATE db_cursor;
+```
