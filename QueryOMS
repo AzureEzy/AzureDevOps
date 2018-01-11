@@ -1,0 +1,15 @@
+Query to see the memory available (GB) and order by free memory (GB)
+
+Perf | where ObjectName == "Memory" and CounterName == "Available MBytes" | summarize FreeMemory = (avg(CounterValue) / 1024) by Computer | sort by FreeMemory desc 
+
+Query to see the memory available (%) and order by free memory (%)
+
+Perf | where ObjectName == "Memory" and CounterName == "% Committed Bytes In Use" | summarize UsedMemory = avg(CounterValue) by Computer | sort by UsedMemory desc 
+
+Query to see the disk space available (GB) and order by free memory (%)
+
+Perf | where ObjectName == "LogicalDisk" and CounterName == "Free Megabytes" and InstanceName !contains "_Total" | summarize FreeDiskGB = avg(CounterValue) / 1024 by Computer, InstanceName | order by FreeDiskGB desc 
+
+Query to see the disk used (%) and order by free memory (%)
+
+Perf | where ObjectName == "LogicalDisk" and CounterName == "% Free Space" and InstanceName != "_Total" | summarize UsedDiskPerc = (100 - avg(CounterValue)) by Computer, InstanceName | sort by UsedDiskPerc desc 
