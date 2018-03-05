@@ -65,3 +65,23 @@ az vm start --ids $(
     az vm list --query "[].id" -o tsv | grep "test"
 )
 ```
+
+### Find the current private IP of the VM
+
+```shell
+az vm show -g <rg_name> -n <vm_name> --show-details  --query "privateIps" 
+```
+
+### Set the private IP of the VM
+
+This step is used while creating the VM, once the nic is created it is passed as a argument to the --nics parameter of the az vm create command.
+
+```shell
+az network nic create \
+--resource-group <rg_name> \
+--name <nic_name> \
+--location southeastasia \
+--subnet FrontEnd \
+--private-ip-address 192.168.1.101 \
+--vnet-name TestVNet
+```
