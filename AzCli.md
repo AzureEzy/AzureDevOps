@@ -1,12 +1,40 @@
 # Azure CLI short cuts
+
 [Read more here](https://buildazure.com/2017/06/07/azure-cli-2-0-quickly-start-stop-all-vms/)
 
+## Subscription operation
+
+### list all the subscription
+
+```shell
+az account list
+```
+
+### Set a particular subscription as default
+
+```shell
+az account set --subscription "<name of the subscription>"
+```
+
+### list the current subscription
+
+```shell
+az account show
+```
+
 ## VM management operations
+
+
+### Create RG
+
+```shell
+az group create --name <RG_name> --location <location> &
+```
 
 ### Delete RG
 
 ```shell
-az group delete --resource-group <rg_name> -yes
+az group delete --resource-group <rg_name> --yes 
 ```
 
 ### Stop a vm in a RG
@@ -64,12 +92,16 @@ All the above concepts can be rolled into a single one.
 az vm start --ids $(
     az vm list --query "[].id" -o tsv | grep "test"
 )
+
+az vm deallocate --ids $(
+    az vm list --query "[].id" -o tsv | grep "test"
+)
 ```
 
 ### Find the current private IP of the VM
 
 ```shell
-az vm show -g <rg_name> -n <vm_name> --show-details  --query "privateIps" 
+az vm show -g <rg_name> -n <vm_name> --show-details  --query "privateIps"
 ```
 
 ### Set the private IP of the VM
