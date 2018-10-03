@@ -1,0 +1,33 @@
+{
+  "name": "meanudemy",
+  "version": "1.0.0",
+  "description": "this is my testing ground of mean stack for udemy course",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashishrajsrivastava/MeanUdemy.git"
+  },
+  "keywords": [
+    "mean",
+    "ashishrajsrivastava"
+  ],
+  "author": "Ashish Raj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashishrajsrivastava/MeanUdemy/issues"
+  },
+  "homepage": "https://github.com/ashishrajsrivastava/MeanUdemy#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "gulp": "^3.9.0",
+    "gulp-zip": "^3.0.2",
+    "minimist": "^1.2.0"
+  }
+}
