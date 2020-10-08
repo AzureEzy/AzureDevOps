@@ -1,0 +1,33 @@
+resources:
+- repo: self
+queue:
+  name: Hosted
+  demands: 
+  - npm
+  - node.js
+
+steps:
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    workingDir: .
+
+    verbose: false
+
+
+- task: Gulp@0
+  displayName: 'Run gulp task'
+  inputs:
+    publishJUnitResults: true
+
+
+- task: ArchiveFiles@2
+  displayName: 'Archive files '
+  inputs:
+    rootFolderOrFile: .
+
+    includeRootFolder: false
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts: drop'
