@@ -1,0 +1,65 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "SouthCentralUS"
+        },
+        "virtualMachinePublisher": {
+            "value": "MicrosoftWindowsServer"
+        },
+        "virtualMachineOffer": {
+            "value": "WindowsServer"
+        },
+        "virtualMachineSKU": {
+            "value": "2012-R2-Datacenter"
+        },
+        "vnetName": {
+            "value": "adp-vnet1"
+        },
+        "VmSize": {
+            "value": "Standard_DS2_v2"
+        },
+        "virtualMachineName": {
+            "value": "adp-demo-vm1"
+        },
+        "adminUsername": {
+            "value": "LocalAdmin"
+        },
+        "adminPassword": {
+          "reference": {
+              "keyVault": {
+                  "id": "/subscriptions/***********/resourceGroups/rg-*****-infra/providers/Microsoft.KeyVault/vaults/adp-key-vault"
+              },
+              "secretName": "******"
+          }
+        },
+        "publicIpAddressType": {
+            "value": "Static"
+        },
+        "publicIpAddressdnsLabel": {
+            "value": "adp-demo-vm1-dns"
+        },
+        "vnetPrefix": {
+            "value": "192.168.0.0/16"
+        },
+        "frontEndSubnetName": {
+            "value": "FrontEnd"
+        },
+        "frontEndSubnetPrefix": {
+            "value": "192.168.1.0/24"
+        },
+        "backEndSubnetName": {
+            "value": "BackEnd"
+        },
+        "backEndSubnetPrefix": {
+            "value":"192.168.2.0/24"
+        },
+        "frontEndNSGName": {
+            "value":"NSG-BackEnd"
+        },
+        "backEndNSGName": {
+            "value":"NSG-FrontEnd"
+        }
+    }
+}
